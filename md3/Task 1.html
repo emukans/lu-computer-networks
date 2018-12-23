@@ -13120,6 +13120,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">100000</span><span class="p">)</span>
@@ -13190,30 +13191,23 @@ div#notebook {
     
     <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plain</span><span class="p">)</span>
 
-<span class="c1"># A list of prime numbers</span>
-<span class="c1"># [3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97</span>
-<span class="c1"># ,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179</span>
-<span class="c1"># ,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269</span>
-<span class="c1"># ,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367</span>
-<span class="c1"># ,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461</span>
-<span class="c1"># ,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571</span>
-<span class="c1"># ,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661</span>
-<span class="c1"># ,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773</span>
-<span class="c1"># ,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883</span>
-<span class="c1"># ,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997]</span>
-
 <span class="n">public</span><span class="p">,</span> <span class="n">private</span> <span class="o">=</span> <span class="n">generate_keypair</span><span class="p">(</span><span class="mi">859</span><span class="p">,</span> <span class="mi">733</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your public key is: &quot;</span><span class="p">,</span> <span class="n">public</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your private key is: &quot;</span><span class="p">,</span> <span class="n">private</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alise ģenerē publisko un privāto atslēgu pāri.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alise dalās ar savu publisko atslēgu: &quot;</span><span class="p">,</span> <span class="n">public</span><span class="p">)</span>
 
 <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;KINO&#39;</span>
+<span class="n">message_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alise veido vēstules MD5 hešu un šifrē to ar privāto atslēgu.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alise nosūta 2 vēstules Bobam.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Atklāta vēstule:&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
 
-<span class="n">cipher</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">public</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="n">cipher</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">message_hash</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Vēstules heša šifrs: &quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cipher</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your encrypted message is: &quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cipher</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your message is:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="n">private</span><span class="p">,</span> <span class="n">cipher</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bobs saņem 2 vēstules.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bobs atšifrē vēstuli ar publisko atslēgu: &quot;</span><span class="p">,</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">public</span><span class="p">,</span> <span class="n">cipher</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bobs izveido atklāta vēstules MD5 hešu: &quot;</span><span class="p">,</span> <span class="n">message_hash</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bobs salīdzina vēstules hešu ar atšifrēto vēstuli. Ja tie sakrīt, sūtītājs un ziņojums ir pareizi.&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13230,12 +13224,16 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Your public key is:  (367691, 629647)
-Your private key is:  (470963, 629647)
-Your encrypted message is: 
-14842664323462858349885
-Your message is:
-KINO
+<pre>Alise ģenerē publisko un privāto atslēgu pāri.
+Alise dalās ar savu publisko atslēgu:  (324809, 629647)
+Alise veido vēstules MD5 hešu un šifrē to ar privāto atslēgu.
+Alise nosūta 2 vēstules Bobam.
+Atklāta vēstule: KINO
+Vēstules heša šifrs:  374274456061456061374274214369229144266193161904456061571165266193187949374274374274535992161904242032143692661933125951879494101375711654101374348955711652420324203434895312595374274571165
+Bobs saņem 2 vēstules.
+Bobs atšifrē vēstuli ar publisko atslēgu:  5225dc492f4755a91d4e76f60f110e5f
+Bobs izveido atklāta vēstules MD5 hešu:  5225dc492f4755a91d4e76f60f110e5f
+Bobs salīdzina vēstules hešu ar atšifrēto vēstuli. Ja tie sakrīt, sūtītājs un ziņojums ir pareizi.
 </pre>
 </div>
 </div>
